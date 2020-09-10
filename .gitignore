@@ -12,6 +12,9 @@
 out/
 *.iml
 
+#dat file
+storage.dat
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

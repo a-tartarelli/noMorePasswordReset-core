@@ -1,7 +1,8 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Credential implements Serializable {
+public class Credential implements Serializable, Comparable<Credential> {
     private String credentialName;
     private String username, password;
     private ArrayList<String> backupCode = new ArrayList<>();
@@ -45,13 +46,41 @@ public class Credential implements Serializable {
         this.backupCode = backupCode;
     }
 
+    public ArrayList<String> getBackupCode() {
+        return backupCode;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Credential)) return false;
+        Credential that = (Credential) o;
+        return Objects.equals(getCredentialName(), that.getCredentialName()) &&
+                Objects.equals(getUsername(), that.getUsername()) &&
+                Objects.equals(getPassword(), that.getPassword()) &&
+                getBackupCode().equals(that.getBackupCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCredentialName(), getUsername(), getPassword(), getBackupCode());
+    }
+
+
+
+
+
     @Override
     public String toString() {
-        String separetor = "________________________________________________";
-        String s = "|name credential|username|password|backup codes|";
-        return separetor + "\n" +s + "\n" + "|" + credentialName + '|' +
+        return "|" + credentialName + '|' +
                 "|" + username + '|' +
-                "|" + password + '|' +
+                "|" + "********" + '|' +
                 "|" + backupCode + "|";
+    }
+
+    @Override
+    public int compareTo(Credential o) {
+        return this.credentialName.compareTo(o.credentialName);
     }
 }

@@ -1,20 +1,15 @@
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
-    /*
-    * usero le mappe per gestire le categorie, map<NomeCat, Array[credential]>
-    controllo ogni volta che si crea una nuova categoria che non sia gia esistente
-    * salvero su file tutta la mappa previo criptaggio delle stringhe sensibili (nome utente, password, codebackup)
-    * */
-
-    public static Scanner in = new Scanner(System.in);
+    private static Scanner in = new Scanner(System.in);
+    private static TreeSet<Credential> credentials = new TreeSet<>();
+    private static TreeMap<String, TreeSet<Credential>> manager = new TreeMap<>();
 
     public static void main(String[] args) {
 
-        ArrayList<Credential> credentials = new ArrayList<>();
         int sel = -1;
         printMenu();
 
@@ -23,13 +18,27 @@ public class Main {
         while(true) {
             switch(sel) {
                 case 0: credentials.add(addCredential());
-                        //System.out.println(credentials.toString());
+                        for (Credential c : credentials) {
+                            IOfile.WriteObjectToFile(c);
+                        }
                     break;
-                case 1: showCredentials(credentials);
+                case 1: String separetor = "________________________________________________";
+                        String s = "|name credential|username|password|backup codes|";
+                        System.out.println(separetor + "\n" + s);
+                        //credentials = (List<Credential>) IOfile.ReadObjectFromFile();
+                        showCredentials(credentials);
                     break;
                 case 2:
                     break;
-                case 3:
+                case 3: System.out.println("Insert caategory name: ");
+                        System.out.println(">:");
+                        in.nextLine();
+                        String catName = in.nextLine();
+                        if(Category.addCategory(new Category(catName)))
+                            System.out.println("Category successful created");
+                        else
+                            System.out.println("Category already present");
+                        Category.showCategory();
                     break;
                 case 4:
                     break;
@@ -44,6 +53,8 @@ public class Main {
 
     }
 
+
+
     public static int getSel() {
         int sel = -1;
         try {
@@ -55,20 +66,22 @@ public class Main {
         return sel;
     }
 
+
+
     public static Credential addCredential() {
         String nameCredential, user, password;
         boolean flag = false;
         ArrayList<String> backupCode = new ArrayList<>();
 
-        System.out.println("Enter your name for credential, username and password: (once at time)");
-        System.out.println("$:");
+        System.out.println("Enter your name for credential, username and password: (one by one)");
+        System.out.println(">:");
         in.nextLine();
         nameCredential = in.nextLine();
-        System.out.println("$:");
+        System.out.println(">:");
         user = in.nextLine();
-        System.out.println("$:");
+        System.out.println(">:");
         password = in.nextLine();
-        System.out.println("$:");
+        System.out.println(">:");
         backupCode = insertBackupCode();
 
         Credential c = new Credential(nameCredential, user, password, backupCode);
@@ -77,6 +90,8 @@ public class Main {
         return c;
     }
 
+
+
     public static ArrayList<String> insertBackupCode() {
         ArrayList<String> backupCode = new ArrayList<>();
         boolean next = true;
@@ -84,7 +99,7 @@ public class Main {
 
 
         do{
-            System.out.println("$:");
+            System.out.println(">:");
             String code = in.nextLine();
             if(code.equalsIgnoreCase("null")) {
                 backupCode = null;
@@ -105,11 +120,16 @@ public class Main {
         return backupCode;
     }
 
-    public static void showCredentials(ArrayList<Credential> credentials) {
-        for(Credential c : credentials) {
+
+
+    public static void showCredentials(TreeSet<Credential> credentials) {
+        credentials.stream().forEach(System.out::println);
+
+        /*for(Credential c : credentials) {
             System.out.println(c.toString());
-        }
+        }*/
     }
+
 
 
     private static void printMenu() {

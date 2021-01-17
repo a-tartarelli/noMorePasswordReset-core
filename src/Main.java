@@ -21,11 +21,12 @@ public class Main {
                         for (Credential c : credentials) {
                             IOfile.WriteObjectToFile(c);
                         }
+                        printMenu();
                     break;
                 case 1: String separetor = "________________________________________________";
                         String s = "|name credential|username|password|backup codes|";
                         System.out.println(separetor + "\n" + s);
-                        //credentials = (List<Credential>) IOfile.ReadObjectFromFile();
+                        //credentials = IOfile.ReadObjectFromFile();
                         showCredentials(credentials);
                     break;
                 case 2:
@@ -39,6 +40,7 @@ public class Main {
                         else
                             System.out.println("Category already present");
                         Category.showCategory();
+                        printMenu();
                     break;
                 case 4:
                     break;

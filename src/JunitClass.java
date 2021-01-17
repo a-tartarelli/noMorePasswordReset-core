@@ -1,11 +1,9 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JunitClass {
 
@@ -30,7 +28,6 @@ public class JunitClass {
         backupCode.add("sd4f5f");
         Credential c = new Credential("test", "mario", "123", backupCode);
 
-
         boolean ok = IOfile.WriteObjectToFile(c);
         assertEquals(true, ok);
     }
@@ -47,6 +44,6 @@ public class JunitClass {
         Credential c = (Credential) IOfile.ReadObjectFromFile();
         System.out.println(c.toString());
         boolean equals = c1.equals(c);
-        Assertions.assertTrue(equals);
+        assertTrue(equals);
     }
 }

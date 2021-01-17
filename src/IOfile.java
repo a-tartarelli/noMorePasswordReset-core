@@ -1,19 +1,28 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class IOfile {
 
     private static final String filepath = "storage.dat";
 
     public IOfile() {
+        try {
+            File myObj = new File(filepath);
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 
 
     public static boolean WriteObjectToFile(Object serObj) {
         boolean write = false;
+
         try {
 
             FileOutputStream fileOut = new FileOutputStream(filepath);
